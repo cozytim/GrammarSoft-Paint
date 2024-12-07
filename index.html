@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <script>
+      let moys = false;
+      let sp;
+      document.addEventListener('mousedown', function(event){
+        moys = true;
+        if (event.target.closest('.dsp')|| !event.target.closest('.wind')) return;
+        sp = setInterval(()=> spawn(event),0.0001);
+      });
+      function spawn(event){
+        const dv = document.createElement('div');
+        dv.classList.add('bix');
+        const sizeRef = document.getElementById('size');
+        var size = sizeRef.value;
+        dv.style.width = size;
+        dv.style.height = size;
+        const col = document.getElementById('colorPicker');
+        dv.style.background = col.value;
+        const windRect = document.querySelector('.wind').getBoundingClientRect();
+        dv.style.top = `${event.clientY-windRect.top-size/2}px`;
+        dv.style.left = `${event.clientX-windRect.left-size/2}px`;
+        document.querySelector('.wind').appendChild(dv);
+      }
+      document.addEventListener('mouseup',function(){
+        moys = false;
+        clearInterval(sp);
+      });
+      document.addEventListener('mousemove',function(event){
+        if(moys){
+          spawn(event);
+        }
+        
+      });
+    </script>
+    <style>
+      .bix{
+        border-radius:90px;
+        position:absolute;
+      }
+      .dsp{
+        border:3px black solid;
+        width:150px;
+        height:150px;
+        padding:10px;
+        background:lightgrey;
+        z-index:99;
+        position:fixed;
+        top:10;
+        left:10;
+      }
+      .wind{
+        border:4px black solid;
+        background:white;
+        position:relative;
+        width:800px;
+        height:600px;
+        overflow:hidden;
+      }
+      .ctr{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height:100vh;
+        margin:0;
+      }
+      .title{
+        position:relative;
+        left:30vw;
+        font-size:60px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class = "title">Grammasoft paint for Sketches</h1>
+    <div class = "dsp">
+    <label for="colorPicker">Choose a color:</label>
+    <input type="color" id="colorPicker" value="#ff0000" />
+    <label id = "szp" for = "">Pick a size:</label>
+    <input id = "size" type = "range" min = 1 max = 150 start = 10%>
+    <button onclick = "location.href = 'index.html'" style = "background:red;  color:white;">clear sketch</button>
+    <p>you can rub out your sketch by setting color to white </p>
+    </div>
+    <div class = "ctr">
+    <div class = "wind">
+      
+    </div>
+    </div>
+  </body>
+</html>
